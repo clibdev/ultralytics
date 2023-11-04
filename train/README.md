@@ -17,11 +17,11 @@ pip install -r requirements.txt
 * Start training:
 
 ```shell
-python train.py --weights yolov8n.pt --data train/data/widerface.yaml
+python train.py --weights yolov8n.pt --data train/data/widerface.yaml 2>&1 | tee -a results.txt
 ```
 
 * Resume training:
 
 ```shell
-python train.py --weights runs/detect/train/weights/last.pt --data train/data/widerface.yaml --resume
+python train.py --weights runs/detect/train/weights/last.pt --data train/data/widerface.yaml --resume 2>&1 | tee -a results.txt
 ```
