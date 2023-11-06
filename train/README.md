@@ -10,6 +10,14 @@ Differences between original repository and fork:
 pip install -r requirements.txt
 ```
 
+# Export to ONNX format
+
+## RT-DETR
+
+```shell
+python custom/export/export_rtdetr.py --weights rtdetr-l.pt
+```
+
 # Training
 
 ## Face detection (WIDERFace dataset)
