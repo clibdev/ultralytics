@@ -10,6 +10,14 @@ Differences between original repository and fork:
 pip install -r requirements.txt
 ```
 
+# Inference
+
+## RT-DETR
+
+```shell
+python custom/inference/detect_rtdetr.py --weights rtdetr-l.pt --source ultralytics/assets/bus.jpg --save-img
+```
+
 # Export to ONNX format
 
 ## RT-DETR
