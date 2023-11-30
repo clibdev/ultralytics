@@ -327,7 +327,7 @@ YOLOv8 可以处理推理输入的不同类型，如下表所示。来源包括�
 
 `model.predict()` 在推理时接受多个参数，可以用来覆盖默认值：
 
-!!! Example
+!!! Example "示例"
 
     ```python
     from ultralytics import YOLO
@@ -354,8 +354,8 @@ YOLOv8 可以处理推理输入的不同类型，如下表所示。来源包括�
 | `save_txt`      | `bool`         | `False`                | 将结果保存为.txt文件                             |
 | `save_conf`     | `bool`         | `False`                | 保存带有置信度分数的结果                             |
 | `save_crop`     | `bool`         | `False`                | 保存带有结果的裁剪图像                              |
-| `hide_labels`   | `bool`         | `False`                | 隐藏标签                                     |
-| `hide_conf`     | `bool`         | `False`                | 隐藏置信度分数                                  |
+| `show_labels`   | `bool`         | `True`                 | 隐藏标签                                     |
+| `show_conf`     | `bool`         | `True`                 | 隐藏置信度分数                                  |
 | `max_det`       | `int`          | `300`                  | 每张图像的最大检测数量                              |
 | `vid_stride`    | `bool`         | `False`                | 视频帧速率跳跃                                  |
 | `stream_buffer` | `bool`         | `False`                | 缓冲所有流媒体帧（True）或返回最新帧（False）              |

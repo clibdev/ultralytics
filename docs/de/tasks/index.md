@@ -11,7 +11,7 @@ keywords: Ultralytics, YOLOv8, Erkennung, Segmentierung, Klassifizierung, Pose-S
 
 YOLOv8 ist ein KI-Framework, das mehrere Aufgaben im Bereich der Computer Vision **unterstützt**. Das Framework kann für die [Erkennung](detect.md), [Segmentierung](segment.md), [Klassifizierung](classify.md) und die [Pose](pose.md)-Schätzung verwendet werden. Jede dieser Aufgaben hat ein unterschiedliches Ziel und Anwendungsgebiete.
 
-!!! Note
+!!! Note "Hinweis"
 
     🚧 Unsere mehrsprachigen Dokumentation befindet sich derzeit im Aufbau und wir arbeiten hart daran, sie zu verbessern. Danke für Ihre Geduld! 🙏
 
@@ -30,25 +30,25 @@ YOLOv8 ist ein KI-Framework, das mehrere Aufgaben im Bereich der Computer Vision
 
 Erkennung ist die primäre von YOLOv8 unterstützte Aufgabe. Sie beinhaltet das Erkennen von Objekten in einem Bild oder Videobild und das Zeichnen von Rahmen um sie herum. Die erkannten Objekte werden anhand ihrer Merkmale in verschiedene Kategorien klassifiziert. YOLOv8 kann mehrere Objekte in einem einzelnen Bild oder Videobild mit hoher Genauigkeit und Geschwindigkeit erkennen.
 
-[Beispiele für Erkennung](detect.md){ .md-button .md-button--primary}
+[Beispiele für Erkennung](detect.md){ .md-button }
 
 ## [Segmentierung](segment.md)
 
 Segmentierung ist eine Aufgabe, die das Aufteilen eines Bildes in unterschiedliche Regionen anhand des Bildinhalts beinhaltet. Jeder Region wird basierend auf ihrem Inhalt eine Markierung zugewiesen. Diese Aufgabe ist nützlich in Anwendungen wie der Bildsegmentierung und medizinischen Bildgebung. YOLOv8 verwendet eine Variante der U-Net-Architektur, um die Segmentierung durchzuführen.
 
-[Beispiele für Segmentierung](segment.md){ .md-button .md-button--primary}
+[Beispiele für Segmentierung](segment.md){ .md-button }
 
 ## [Klassifizierung](classify.md)
 
 Klassifizierung ist eine Aufgabe, die das Einordnen eines Bildes in verschiedene Kategorien umfasst. YOLOv8 kann genutzt werden, um Bilder anhand ihres Inhalts zu klassifizieren. Es verwendet eine Variante der EfficientNet-Architektur, um die Klassifizierung durchzuführen.
 
-[Beispiele für Klassifizierung](classify.md){ .md-button .md-button--primary}
+[Beispiele für Klassifizierung](classify.md){ .md-button }
 
 ## [Pose](pose.md)
 
 Die Pose-/Keypoint-Erkennung ist eine Aufgabe, die das Erkennen von spezifischen Punkten in einem Bild oder Videobild beinhaltet. Diese Punkte werden als Keypoints bezeichnet und werden zur Bewegungsverfolgung oder Pose-Schätzung verwendet. YOLOv8 kann Keypoints in einem Bild oder Videobild mit hoher Genauigkeit und Geschwindigkeit erkennen.
 
-[Beispiele für Posen](pose.md){ .md-button .md-button--primary}
+[Beispiele für Posen](pose.md){ .md-button }
 
 ## Fazit
 
