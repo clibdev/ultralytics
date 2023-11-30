@@ -13,8 +13,6 @@ if __name__ == '__main__':
     parser.add_argument('--resume', nargs='?', const=True, default=False, help='Resume most recent training')
     opt = parser.parse_args()
 
-    print(opt.resume)
-
     model = YOLO(opt.weights)
     model.train(
         data=opt.data,
