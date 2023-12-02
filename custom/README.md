@@ -12,6 +12,12 @@ pip install -r requirements.txt
 
 # Inference
 
+## YOLOv8
+
+```shell
+python custom/inference/detect_yolo.py --weights yolov8n.pt --source ultralytics/assets/bus.jpg --save-img
+```
+
 ## RT-DETR
 
 ```shell
@@ -19,6 +25,12 @@ python custom/inference/detect_rtdetr.py --weights rtdetr-l.pt --source ultralyt
 ```
 
 # Export to ONNX format
+
+## YOLOv8
+
+```shell
+python custom/export/export_yolo.py --weights yolov8n.pt
+```
 
 ## RT-DETR
 

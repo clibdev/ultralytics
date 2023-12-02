@@ -1,4 +1,4 @@
-path: /home/adminer/dev/workspace/python/dataset-utils/datasets/widerface  # dataset root dir
+path: /home/clibdev/dev/workspace/python/dataset-utils/datasets/widerface  # dataset root dir
 train: train  # train images (relative to 'path')
 val: val  # val images (relative to 'path')
 test:  # test images (optional)
