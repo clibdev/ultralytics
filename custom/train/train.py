@@ -1,11 +1,14 @@
+import os
+import sys
 import argparse
+sys.path.append(os.getcwd())
 from ultralytics import YOLO
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, default='yolov8n.pt', help='Initial weights path')
-    parser.add_argument('--data', type=str, default='train/data/widerface.yaml', help='Path to data file')
+    parser.add_argument('--data', type=str, default='custom/train/data/widerface.yaml', help='Path to data file')
     parser.add_argument('--epochs', type=int, default=300)
     parser.add_argument('--batch', type=int, default=16)
     parser.add_argument('--img-size', type=int, default=640, help='Size of input images')

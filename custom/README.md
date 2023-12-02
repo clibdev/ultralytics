@@ -45,11 +45,11 @@ python custom/export/export_rtdetr.py --weights rtdetr-l.pt
 * Start training:
 
 ```shell
-python train.py --weights yolov8n.pt --data train/data/widerface.yaml 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov8n.pt --data custom/train/data/widerface.yaml --epochs 300 2>&1 | tee -a results.txt
 ```
 
 * Resume training:
 
 ```shell
-python train.py --weights runs/detect/train/weights/last.pt --data train/data/widerface.yaml --resume 2>&1 | tee -a results.txt
+python custom/train/train.py --weights runs/detect/train/weights/last.pt --data custom/train/data/widerface.yaml --resume 2>&1 | tee -a results.txt
 ```
