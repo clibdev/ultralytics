@@ -38,6 +38,14 @@ python custom/export/export_yolo.py --weights yolov8n.pt
 python custom/export/export_rtdetr.py --weights rtdetr-l.pt
 ```
 
+# Validation
+
+## YOLOv8
+
+```shell
+python custom/validate/validate_yolo.py --weights runs/detect/train/weights/best.pt --data custom/train/data/widerface.yaml
+```
+
 # Training
 
 ## Face detection (WIDERFace dataset)
