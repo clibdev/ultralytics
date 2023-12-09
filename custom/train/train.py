@@ -14,14 +14,25 @@ if __name__ == '__main__':
     parser.add_argument('--img-size', type=int, default=640, help='Size of input images')
     parser.add_argument('--device', default='0', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--resume', nargs='?', const=True, default=False, help='Resume most recent training')
+    parser.add_argument('--optimizer', default=None, help='SGD, Adam, Adamax, AdamW, NAdam, RAdam, RMSProp, auto')
+    parser.add_argument('--lrf', type=float, default=None, help='Final learning rate (lr0 * lrf)')
+    parser.add_argument('--weight-decay', type=float, default=None, help='Optimizer weight decay')
     opt = parser.parse_args()
 
+    params = {
+        'data': opt.data,
+        'epochs': opt.epochs,
+        'batch': opt.batch,
+        'imgsz': opt.img_size,
+        'device': opt.device,
+        'resume': opt.resume,
+    }
+    if opt.optimizer:
+        params['optimizer'] = opt.optimizer
+    if opt.lrf:
+        params['lrf'] = opt.lrf
+    if opt.weight_decay:
+        params['weight_decay'] = opt.weight_decay
+
     model = YOLO(opt.weights)
-    model.train(
-        data=opt.data,
-        epochs=opt.epochs,
-        batch=opt.batch,
-        imgsz=opt.img_size,
-        device=opt.device,
-        resume=opt.resume
-    )
+    model.train(**params)

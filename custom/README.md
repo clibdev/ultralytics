@@ -54,6 +54,10 @@ python custom/validate/validate_yolo.py --weights runs/detect/train/weights/best
 
 ```shell
 python custom/train/train.py --weights yolov8n.pt --data custom/train/data/widerface.yaml --epochs 300 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov8s.pt --data custom/train/data/widerface.yaml --epochs 200 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov8m.pt --data custom/train/data/widerface.yaml --epochs 120 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov8l.pt --data custom/train/data/widerface.yaml --epochs 110 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov8x.pt --data custom/train/data/widerface.yaml --epochs 240 --optimizer SGD --lrf 1e-5 --weight-decay 5e-3 2>&1 | tee -a results.txt
 ```
 
 * Resume training:
