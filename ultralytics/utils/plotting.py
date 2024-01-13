@@ -13,7 +13,6 @@ from PIL import Image, ImageDraw, ImageFont
 from PIL import __version__ as pil_version
 
 from ultralytics.utils import LOGGER, TryExcept, ops, plt_settings, threaded
-
 from .checks import check_font, check_version, is_ascii
 from .files import increment_path
 
@@ -365,7 +364,6 @@ class Annotator:
         self.tf = count_txt_size
         tl = self.tf or round(0.002 * (self.im.shape[0] + self.im.shape[1]) / 2) + 1
         tf = max(tl - 1, 1)
-        gap = int(24 * tl)  # gap between in_count and out_count based on line_thickness
 
         # Get text size for in_count and out_count
         t_size_in = cv2.getTextSize(str(counts), 0, fontScale=tl / 2, thickness=tf)[0]
@@ -434,7 +432,7 @@ class Annotator:
             center_kpt (int): centroid pose index for workout monitoring
             line_thickness (int): thickness for text display
         """
-        angle_text, count_text, stage_text = (f" {angle_text:.2f}", "Steps : " + f"{count_text}", f" {stage_text}")
+        angle_text, count_text, stage_text = (f" {angle_text:.2f}", f"Steps : {count_text}", f" {stage_text}")
         font_scale = 0.6 + (line_thickness / 10.0)
 
         # Draw angle
@@ -774,12 +772,11 @@ def plot_images(
                                 im[y : y + h, x : x + w, :][mask] * 0.4 + np.array(color) * 0.6
                             )
                 annotator.fromarray(im)
-    if save:
-        annotator.im.save(fname)  # save
-        if on_plot:
-            on_plot(fname)
-    else:
+    if not save:
         return np.asarray(annotator.im)
+    annotator.im.save(fname)  # save
+    if on_plot:
+        on_plot(fname)
 
 
 @plt_settings()
