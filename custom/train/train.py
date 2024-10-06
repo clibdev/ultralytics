@@ -7,13 +7,13 @@ from ultralytics import YOLO
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--weights', type=str, default='yolov8n.pt', help='Initial weights path')
-    parser.add_argument('--data', type=str, default='custom/train/data/widerface.yaml', help='Path to data file')
+    parser.add_argument('--weights', default='yolov8n.pt', help='Initial weights path')
+    parser.add_argument('--data', default='custom/train/data/widerface.yaml', help='Path to data file')
     parser.add_argument('--epochs', type=int, default=300)
     parser.add_argument('--batch', type=int, default=16)
-    parser.add_argument('--img-size', type=int, default=640, help='Size of input images')
-    parser.add_argument('--device', default='0', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
-    parser.add_argument('--resume', nargs='?', const=True, default=False, help='Resume most recent training')
+    parser.add_argument('--imgsz', type=int, default=640, help='Image size')
+    parser.add_argument('--device', default='0', help='CUDA device, i.e. 0 or 0,1,2,3 or cpu')
+    parser.add_argument('--resume', type=bool, nargs='?', const=True, default=False, help='Resume most recent training')
     parser.add_argument('--optimizer', default=None, help='SGD, Adam, Adamax, AdamW, NAdam, RAdam, RMSProp, auto')
     parser.add_argument('--lrf', type=float, default=None, help='Final learning rate (lr0 * lrf)')
     parser.add_argument('--weight-decay', type=float, default=None, help='Optimizer weight decay')
@@ -23,7 +23,7 @@ if __name__ == '__main__':
         'data': opt.data,
         'epochs': opt.epochs,
         'batch': opt.batch,
-        'imgsz': opt.img_size,
+        'imgsz': opt.imgsz,
         'device': opt.device,
         'resume': opt.resume,
     }
