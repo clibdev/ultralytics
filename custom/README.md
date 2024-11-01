@@ -18,6 +18,12 @@ pip install -r requirements.txt
 python custom/inference/detect_yolo.py --weights yolov8n.pt --source ultralytics/assets/bus.jpg --save-img
 ```
 
+## YOLOv9
+
+```shell
+python custom/inference/detect_yolo.py --weights yolov9t.pt --source ultralytics/assets/bus.jpg --save-img
+```
+
 ## RT-DETR
 
 ```shell
@@ -58,6 +64,14 @@ python custom/train/train.py --weights yolov8s.pt --data custom/train/data/wider
 python custom/train/train.py --weights yolov8m.pt --data custom/train/data/widerface.yaml --epochs 120 2>&1 | tee -a results.txt
 python custom/train/train.py --weights yolov8l.pt --data custom/train/data/widerface.yaml --epochs 110 2>&1 | tee -a results.txt
 python custom/train/train.py --weights yolov8x.pt --data custom/train/data/widerface.yaml --epochs 240 --optimizer SGD --lrf 1e-5 --weight-decay 5e-3 2>&1 | tee -a results.txt
+```
+
+```shell
+python custom/train/train.py --weights yolov9t.pt --data custom/train/data/widerface.yaml --epochs 300 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov9s.pt --data custom/train/data/widerface.yaml --epochs 300 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov9m.pt --data custom/train/data/widerface.yaml --epochs 200 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov9c.pt --data custom/train/data/widerface.yaml --epochs 130 2>&1 | tee -a results.txt
+python custom/train/train.py --weights yolov9e.pt --data custom/train/data/widerface.yaml --epochs 70 --batch 9 2>&1 | tee -a results.txt
 ```
 
 * Resume training:
