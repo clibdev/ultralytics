@@ -56,6 +56,13 @@ python custom/validate/validate_yolo.py --weights runs/detect/train/weights/best
 
 ## Face detection (WIDERFace dataset)
 
+* Change files for less logging:
+
+```shell
+sed -i '/kwargs.setdefault("bar_format"/a\        kwargs.setdefault("mininterval", 500)' ultralytics/utils/__init__.py
+sed -i '/batch\["img"\].shape\[-1\]/ {n; s/)/),\n                        refresh=False/}' ultralytics/engine/trainer.py
+```
+
 * Start training:
 
 ```shell
