@@ -1,22 +1,20 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 from .tasks import (
     BaseModel,
     ClassificationModel,
     DetectionModel,
     SegmentationModel,
-    attempt_load_one_weight,
-    attempt_load_weights,
     guess_model_scale,
     guess_model_task,
+    load_checkpoint,
     parse_model,
     torch_safe_load,
     yaml_model_load,
 )
 
 __all__ = (
-    "attempt_load_one_weight",
-    "attempt_load_weights",
+    "load_checkpoint",
     "parse_model",
     "yaml_model_load",
     "guess_model_task",

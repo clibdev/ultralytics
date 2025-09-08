@@ -8,22 +8,26 @@ keywords: Ultralytics, YOLO11, NVIDIA Jetson, JetPack, AI deployment, performanc
 
 This comprehensive guide provides a detailed walkthrough for deploying Ultralytics YOLO11 on [NVIDIA Jetson](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/) devices. Additionally, it showcases performance benchmarks to demonstrate the capabilities of YOLO11 on these small and powerful devices.
 
+!!! tip "New product support"
+
+    We have updated this guide with the latest [NVIDIA Jetson Orin Nano Super Developer Kit](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/nano-super-developer-kit) which delivers up to 67 TOPS of AI performance — a 1.7X improvement over its predecessor — to seamlessly run the most popular AI models.
+
 <p align="center">
   <br>
-  <iframe loading="lazy" width="720" height="405" src="https://www.youtube.com/embed/mUybgOlSxxA"
+  <iframe loading="lazy" width="720" height="405" src="https://www.youtube.com/embed/BPYkGt3odNk"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen>
   </iframe>
   <br>
-  <strong>Watch:</strong> How to Setup NVIDIA Jetson with Ultralytics YOLO11
+  <strong>Watch:</strong> How to use Ultralytics YOLO11 on NVIDIA JETSON Devices
 </p>
 
 <img width="1024" src="https://github.com/ultralytics/docs/releases/download/0/nvidia-jetson-ecosystem.avif" alt="NVIDIA Jetson Ecosystem">
 
 !!! note
 
-    This guide has been tested with both [Seeed Studio reComputer J4012](https://www.seeedstudio.com/reComputer-J4012-p-5586.html) which is based on NVIDIA Jetson Orin NX 16GB running the latest stable JetPack release of [JP6.0](https://developer.nvidia.com/embedded/jetpack-sdk-60), JetPack release of [JP5.1.3](https://developer.nvidia.com/embedded/jetpack-sdk-513) and [Seeed Studio reComputer J1020 v2](https://www.seeedstudio.com/reComputer-J1020-v2-p-5498.html) which is based on NVIDIA Jetson Nano 4GB running JetPack release of [JP4.6.1](https://developer.nvidia.com/embedded/jetpack-sdk-461). It is expected to work across all the NVIDIA Jetson hardware lineup including latest and legacy.
+    This guide has been tested with [NVIDIA Jetson AGX Orin Developer Kit (64GB)](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin) running the latest stable JetPack release of [JP6.2](https://developer.nvidia.com/embedded/jetpack-sdk-62), [NVIDIA Jetson Orin Nano Super Developer Kit](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/nano-super-developer-kit) running JetPack release of [JP6.1](https://developer.nvidia.com/embedded/jetpack-sdk-61), [Seeed Studio reComputer J4012](https://www.seeedstudio.com/reComputer-J4012-p-5586.html) which is based on NVIDIA Jetson Orin NX 16GB running JetPack release of [JP6.0](https://developer.nvidia.com/embedded/jetpack-sdk-60)/ JetPack release of [JP5.1.3](https://developer.nvidia.com/embedded/jetpack-sdk-513) and [Seeed Studio reComputer J1020 v2](https://www.seeedstudio.com/reComputer-J1020-v2-p-5498.html) which is based on NVIDIA Jetson Nano 4GB running JetPack release of [JP4.6.1](https://developer.nvidia.com/embedded/jetpack-sdk-461). It is expected to work across all the NVIDIA Jetson hardware lineup including latest and legacy.
 
 ## What is NVIDIA Jetson?
 
@@ -33,20 +37,20 @@ NVIDIA Jetson is a series of embedded computing boards designed to bring acceler
 
 [Jetson Orin](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/) is the latest iteration of the NVIDIA Jetson family based on NVIDIA Ampere architecture which brings drastically improved AI performance when compared to the previous generations. Below table compared few of the Jetson devices in the ecosystem.
 
-|                   | Jetson AGX Orin 64GB                                              | Jetson Orin NX 16GB                                              | Jetson Orin Nano 8GB                                          | Jetson AGX Xavier                                           | Jetson Xavier NX                                              | Jetson Nano                                   |
+|                   | Jetson AGX Orin 64GB                                              | Jetson Orin NX 16GB                                              | Jetson Orin Nano Super                                        | Jetson AGX Xavier                                           | Jetson Xavier NX                                              | Jetson Nano                                   |
 | ----------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------- |
-| AI Performance    | 275 TOPS                                                          | 100 TOPS                                                         | 40 TOPs                                                       | 32 TOPS                                                     | 21 TOPS                                                       | 472 GFLOPS                                    |
+| AI Performance    | 275 TOPS                                                          | 100 TOPS                                                         | 67 TOPs                                                       | 32 TOPS                                                     | 21 TOPS                                                       | 472 GFLOPS                                    |
 | GPU               | 2048-core NVIDIA Ampere architecture GPU with 64 Tensor Cores     | 1024-core NVIDIA Ampere architecture GPU with 32 Tensor Cores    | 1024-core NVIDIA Ampere architecture GPU with 32 Tensor Cores | 512-core NVIDIA Volta architecture GPU with 64 Tensor Cores | 384-core NVIDIA Volta™ architecture GPU with 48 Tensor Cores | 128-core NVIDIA Maxwell™ architecture GPU    |
-| GPU Max Frequency | 1.3 GHz                                                           | 918 MHz                                                          | 625 MHz                                                       | 1377 MHz                                                    | 1100 MHz                                                      | 921MHz                                        |
+| GPU Max Frequency | 1.3 GHz                                                           | 918 MHz                                                          | 1020 MHz                                                      | 1377 MHz                                                    | 1100 MHz                                                      | 921MHz                                        |
 | CPU               | 12-core NVIDIA Arm® Cortex A78AE v8.2 64-bit CPU 3MB L2 + 6MB L3 | 8-core NVIDIA Arm® Cortex A78AE v8.2 64-bit CPU 2MB L2 + 4MB L3 | 6-core Arm® Cortex®-A78AE v8.2 64-bit CPU 1.5MB L2 + 4MB L3 | 8-core NVIDIA Carmel Arm®v8.2 64-bit CPU 8MB L2 + 4MB L3   | 6-core NVIDIA Carmel Arm®v8.2 64-bit CPU 6MB L2 + 4MB L3     | Quad-Core Arm® Cortex®-A57 MPCore processor |
-| CPU Max Frequency | 2.2 GHz                                                           | 2.0 GHz                                                          | 1.5 GHz                                                       | 2.2 GHz                                                     | 1.9 GHz                                                       | 1.43GHz                                       |
-| Memory            | 64GB 256-bit LPDDR5 204.8GB/s                                     | 16GB 128-bit LPDDR5 102.4GB/s                                    | 8GB 128-bit LPDDR5 68 GB/s                                    | 32GB 256-bit LPDDR4x 136.5GB/s                              | 8GB 128-bit LPDDR4x 59.7GB/s                                  | 4GB 64-bit LPDDR4 25.6GB/s"                   |
+| CPU Max Frequency | 2.2 GHz                                                           | 2.0 GHz                                                          | 1.7 GHz                                                       | 2.2 GHz                                                     | 1.9 GHz                                                       | 1.43GHz                                       |
+| Memory            | 64GB 256-bit LPDDR5 204.8GB/s                                     | 16GB 128-bit LPDDR5 102.4GB/s                                    | 8GB 128-bit LPDDR5 102 GB/s                                   | 32GB 256-bit LPDDR4x 136.5GB/s                              | 8GB 128-bit LPDDR4x 59.7GB/s                                  | 4GB 64-bit LPDDR4 25.6GB/s"                   |
 
 For a more detailed comparison table, please visit the **Technical Specifications** section of [official NVIDIA Jetson page](https://developer.nvidia.com/embedded/jetson-modules).
 
 ## What is NVIDIA JetPack?
 
-[NVIDIA JetPack SDK](https://developer.nvidia.com/embedded/jetpack) powering the Jetson modules is the most comprehensive solution and provides full development environment for building end-to-end accelerated AI applications and shortens time to market. JetPack includes Jetson Linux with bootloader, Linux kernel, Ubuntu desktop environment, and a complete set of libraries for acceleration of GPU computing, multimedia, graphics, and [computer vision](https://www.ultralytics.com/glossary/computer-vision-cv). It also includes samples, documentation, and developer tools for both host computer and developer kit, and supports higher level SDKs such as DeepStream for streaming video analytics, Isaac for robotics, and Riva for conversational AI.
+[NVIDIA JetPack SDK](https://developer.nvidia.com/embedded/jetpack) powering the Jetson modules is the most comprehensive solution and provides full development environment for building end-to-end accelerated AI applications and shortens time to market. JetPack includes Jetson Linux with bootloader, Linux kernel, Ubuntu desktop environment, and a complete set of libraries for acceleration of GPU computing, multimedia, graphics, and [computer vision](https://www.ultralytics.com/glossary/computer-vision-cv). It also includes samples, documentation, and developer tools for both host computer and developer kit, and supports higher level SDKs such as [DeepStream](https://docs.ultralytics.com/guides/deepstream-nvidia-jetson/) for streaming video analytics, Isaac for robotics, and Riva for conversational AI.
 
 ## Flash JetPack to NVIDIA Jetson
 
@@ -106,7 +110,7 @@ After this is done, skip to [Use TensorRT on NVIDIA Jetson section](#use-tensorr
 
 For a native installation without Docker, please refer to the steps below.
 
-### Run on JetPack 6.x
+### Run on JetPack 6.1
 
 #### Install Ultralytics Package
 
@@ -136,25 +140,34 @@ Here we will install Ultralytics package on the Jetson with optional dependencie
 
 The above ultralytics installation will install Torch and Torchvision. However, these 2 packages installed via pip are not compatible to run on Jetson platform which is based on ARM64 architecture. Therefore, we need to manually install pre-built PyTorch pip wheel and compile/ install Torchvision from source.
 
-Install `torch 2.3.0` and `torchvision 0.18` according to JP6.0
+Install `torch 2.5.0` and `torchvision 0.20` according to JP6.1
 
 ```bash
-sudo apt-get install libopenmpi-dev libopenblas-base libomp-dev -y
-pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torch-2.3.0-cp310-cp310-linux_aarch64.whl
-pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torchvision-0.18.0a0+6043bc2-cp310-cp310-linux_aarch64.whl
+pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torch-2.5.0a0+872d972e41.nv24.08-cp310-cp310-linux_aarch64.whl
+pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torchvision-0.20.0a0+afc54f7-cp310-cp310-linux_aarch64.whl
 ```
 
-Visit the [PyTorch for Jetson page](https://forums.developer.nvidia.com/t/pytorch-for-jetson/72048) to access all different versions of PyTorch for different JetPack versions. For a more detailed list on the PyTorch, Torchvision compatibility, visit the [PyTorch and Torchvision compatibility page](https://github.com/pytorch/vision).
+!!! note
+
+    Visit the [PyTorch for Jetson page](https://forums.developer.nvidia.com/t/pytorch-for-jetson/72048) to access all different versions of PyTorch for different JetPack versions. For a more detailed list on the PyTorch, Torchvision compatibility, visit the [PyTorch and Torchvision compatibility page](https://github.com/pytorch/vision).
+
+Install [`cuSPARSELt`](https://developer.nvidia.com/cusparselt-downloads?target_os=Linux&target_arch=aarch64-jetson&Compilation=Native&Distribution=Ubuntu&target_version=22.04&target_type=deb_network) to fix a dependency issue with `torch 2.5.0`
+
+```bash
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/arm64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get update
+sudo apt-get -y install libcusparselt0 libcusparselt-dev
+```
 
 #### Install `onnxruntime-gpu`
 
 The [onnxruntime-gpu](https://pypi.org/project/onnxruntime-gpu/) package hosted in PyPI does not have `aarch64` binaries for the Jetson. So we need to manually install this package. This package is needed for some of the exports.
 
-All different `onnxruntime-gpu` packages corresponding to different JetPack and Python versions are listed [here](https://elinux.org/Jetson_Zoo#ONNX_Runtime). However, here we will download and install `onnxruntime-gpu 1.18.0` with `Python3.10` support.
+You can find all available `onnxruntime-gpu` packages—organized by JetPack version, Python version, and other compatibility details—in the [Jetson Zoo ONNX Runtime compatibility matrix](https://elinux.org/Jetson_Zoo#ONNX_Runtime). Here we will download and install `onnxruntime-gpu 1.20.0` with `Python3.10` support.
 
 ```bash
-wget https://nvidia.box.com/shared/static/48dtuob7meiw6ebgfsfqakc9vse62sg4.whl -O onnxruntime_gpu-1.18.0-cp310-cp310-linux_aarch64.whl
-pip install onnxruntime_gpu-1.18.0-cp310-cp310-linux_aarch64.whl
+pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/onnxruntime_gpu-1.20.0-cp310-cp310-linux_aarch64.whl
 ```
 
 !!! note
@@ -163,7 +176,7 @@ pip install onnxruntime_gpu-1.18.0-cp310-cp310-linux_aarch64.whl
 
     `pip install numpy==1.23.5`
 
-### Run on JetPack 5.x
+### Run on JetPack 5.1.2
 
 #### Install Ultralytics Package
 
@@ -199,31 +212,22 @@ The above ultralytics installation will install Torch and Torchvision. However, 
     pip uninstall torch torchvision
     ```
 
-2. Install PyTorch 2.1.0 according to JP5.1.3
+2. Install `torch 2.2.0` and `torchvision 0.17.2` according to JP5.1.2
 
     ```bash
-    sudo apt-get install -y libopenblas-base libopenmpi-dev
-    wget https://developer.download.nvidia.com/compute/redist/jp/v512/pytorch/torch-2.1.0a0+41361538.nv23.06-cp38-cp38-linux_aarch64.whl -O torch-2.1.0a0+41361538.nv23.06-cp38-cp38-linux_aarch64.whl
-    pip install torch-2.1.0a0+41361538.nv23.06-cp38-cp38-linux_aarch64.whl
+    pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torch-2.2.0-cp38-cp38-linux_aarch64.whl
+    pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torchvision-0.17.2+c1d70fe-cp38-cp38-linux_aarch64.whl
     ```
 
-3. Install Torchvision v0.16.2 according to PyTorch v2.1.0
+!!! note
 
-    ```bash
-    sudo apt install -y libjpeg-dev zlib1g-dev
-    git clone https://github.com/pytorch/vision torchvision
-    cd torchvision
-    git checkout v0.16.2
-    python3 setup.py install --user
-    ```
-
-Visit the [PyTorch for Jetson page](https://forums.developer.nvidia.com/t/pytorch-for-jetson/72048) to access all different versions of PyTorch for different JetPack versions. For a more detailed list on the PyTorch, Torchvision compatibility, visit the [PyTorch and Torchvision compatibility page](https://github.com/pytorch/vision).
+    Visit the [PyTorch for Jetson page](https://forums.developer.nvidia.com/t/pytorch-for-jetson/72048) to access all different versions of PyTorch for different JetPack versions. For a more detailed list on the PyTorch, Torchvision compatibility, visit the [PyTorch and Torchvision compatibility page](https://github.com/pytorch/vision).
 
 #### Install `onnxruntime-gpu`
 
 The [onnxruntime-gpu](https://pypi.org/project/onnxruntime-gpu/) package hosted in PyPI does not have `aarch64` binaries for the Jetson. So we need to manually install this package. This package is needed for some of the exports.
 
-All different `onnxruntime-gpu` packages corresponding to different JetPack and Python versions are listed [here](https://elinux.org/Jetson_Zoo#ONNX_Runtime). However, here we will download and install `onnxruntime-gpu 1.17.0` with `Python3.8` support.
+You can find all available `onnxruntime-gpu` packages—organized by JetPack version, Python version, and other compatibility details—in the [Jetson Zoo ONNX Runtime compatibility matrix](https://elinux.org/Jetson_Zoo#ONNX_Runtime). Here we will download and install `onnxruntime-gpu 1.17.0` with `Python3.8` support.
 
 ```bash
 wget https://nvidia.box.com/shared/static/zostg6agm00fb6t5uisw51qi6kpcuwzd.whl -O onnxruntime_gpu-1.17.0-cp38-cp38-linux_aarch64.whl
@@ -238,7 +242,7 @@ pip install onnxruntime_gpu-1.17.0-cp38-cp38-linux_aarch64.whl
 
 ## Use TensorRT on NVIDIA Jetson
 
-Out of all the model export formats supported by Ultralytics, TensorRT delivers the best inference performance when working with NVIDIA Jetson devices and our recommendation is to use TensorRT with Jetson. We also have a detailed document on TensorRT [here](../integrations/tensorrt.md).
+Among all the model export formats supported by Ultralytics, TensorRT offers the highest inference performance on NVIDIA Jetson devices, making it our top recommendation for Jetson deployments. For setup instructions and advanced usage, see our [dedicated TensorRT integration guide](../integrations/tensorrt.md).
 
 ### Convert Model to TensorRT and Run Inference
 
@@ -268,11 +272,15 @@ The YOLO11n model in PyTorch format is converted to TensorRT to run inference wi
 
         ```bash
         # Export a YOLO11n PyTorch model to TensorRT format
-        yolo export model=yolo11n.pt format=engine  # creates 'yolo11n.engine'
+        yolo export model=yolo11n.pt format=engine # creates 'yolo11n.engine'
 
         # Run inference with the exported model
         yolo predict model=yolo11n.engine source='https://ultralytics.com/images/bus.jpg'
         ```
+
+!!! note
+
+    Visit the [Export page](../modes/export.md#arguments) to access additional arguments when exporting models to different model formats
 
 ### Use NVIDIA Deep Learning Accelerator (DLA)
 
@@ -280,10 +288,13 @@ The YOLO11n model in PyTorch format is converted to TensorRT to run inference wi
 
 The following Jetson devices are equipped with DLA hardware:
 
-- Jetson Orin NX 16GB
-- Jetson AGX Orin Series
-- Jetson AGX Xavier Series
-- Jetson Xavier NX Series
+| Jetson Device            | DLA Cores | DLA Max Frequency |
+| ------------------------ | --------- | ----------------- |
+| Jetson AGX Orin Series   | 2         | 1.6 GHz           |
+| Jetson Orin NX 16GB      | 2         | 614 MHz           |
+| Jetson Orin NX 8GB       | 1         | 614 MHz           |
+| Jetson AGX Xavier Series | 2         | 1.4 GHz           |
+| Jetson Xavier NX Series  | 2         | 1.1 GHz           |
 
 !!! example
 
@@ -309,7 +320,8 @@ The following Jetson devices are equipped with DLA hardware:
 
         ```bash
         # Export a YOLO11n PyTorch model to TensorRT format with DLA enabled (only works with FP16 or INT8)
-        yolo export model=yolo11n.pt format=engine device="dla:0" half=True  # dla:0 or dla:1 corresponds to the DLA cores
+        # Once DLA core number is specified at export, it will use the same core at inference
+        yolo export model=yolo11n.pt format=engine device="dla:0" half=True # dla:0 or dla:1 corresponds to the DLA cores
 
         # Run inference with the exported model on the DLA
         yolo predict model=yolo11n.engine source='https://ultralytics.com/images/bus.jpg'
@@ -317,112 +329,327 @@ The following Jetson devices are equipped with DLA hardware:
 
 !!! note
 
-    Visit the [Export page](../modes/export.md#arguments) to access additional arguments when exporting models to different model formats
+    When using DLA exports, some layers may not be supported to run on DLA and will fall back to the GPU for execution. This fallback can introduce additional latency and impact the overall inference performance. Therefore, DLA is not primarily designed to reduce inference latency compared to TensorRT running entirely on the GPU. Instead, its primary purpose is to increase throughput and improve energy efficiency.
 
 ## NVIDIA Jetson Orin YOLO11 Benchmarks
 
-YOLO11 benchmarks were run by the Ultralytics team on 10 different model formats measuring speed and [accuracy](https://www.ultralytics.com/glossary/accuracy): PyTorch, TorchScript, ONNX, OpenVINO, TensorRT, TF SavedModel, TF GraphDef, TF Lite, PaddlePaddle, NCNN. Benchmarks were run on Seeed Studio reComputer J4012 powered by Jetson Orin NX 16GB device at FP32 [precision](https://www.ultralytics.com/glossary/precision) with default input image size of 640.
+YOLO11 benchmarks were run by the Ultralytics team on 10 different model formats measuring speed and [accuracy](https://www.ultralytics.com/glossary/accuracy): PyTorch, TorchScript, ONNX, OpenVINO, TensorRT, TF SavedModel, TF GraphDef, TF Lite, MNN, NCNN. Benchmarks were run on NVIDIA Jetson AGX Orin Developer Kit (64GB), NVIDIA Jetson Orin Nano Super Developer Kit and Seeed Studio reComputer J4012 powered by Jetson Orin NX 16GB device at FP32 [precision](https://www.ultralytics.com/glossary/precision) with default input image size of 640.
 
-### Comparison Chart
+### Comparison Charts
 
 Even though all model exports are working with NVIDIA Jetson, we have only included **PyTorch, TorchScript, TensorRT** for the comparison chart below because, they make use of the GPU on the Jetson and are guaranteed to produce the best results. All the other exports only utilize the CPU and the performance is not as good as the above three. You can find benchmarks for all exports in the section after this chart.
 
-<div style="text-align: center;">
-    <img src="https://github.com/ultralytics/docs/releases/download/0/nvidia-jetson-benchmarks.avif" alt="NVIDIA Jetson Ecosystem">
-</div>
+#### NVIDIA Jetson AGX Orin Developer Kit (64GB)
 
-### Detailed Comparison Table
+<figure style="text-align: center;">
+    <img src="https://github.com/ultralytics/assets/releases/download/v0.0.0/jetson-agx-orin-benchmarks-coco128.avif" alt="Jetson AGX Orin Benchmarks">
+    <figcaption style="font-style: italic; color: gray;">Benchmarked with Ultralytics 8.3.157</figcaption>
+</figure>
 
-The below table represents the benchmark results for five different models (YOLO11n, YOLO11s, YOLO11m, YOLO11l, YOLO11x) across ten different formats (PyTorch, TorchScript, ONNX, OpenVINO, TensorRT, TF SavedModel, TF GraphDef, TF Lite, PaddlePaddle, NCNN), giving us the status, size, mAP50-95(B) metric, and inference time for each combination.
+#### NVIDIA Jetson Orin Nano Super Developer Kit
 
-!!! performance
+<figure style="text-align: center;">
+    <img src="https://github.com/ultralytics/assets/releases/download/v0.0.0/jetson-orin-nano-super-benchmarks-coco128.avif" alt="Jetson Orin Nano Super Benchmarks">
+    <figcaption style="font-style: italic; color: gray;">Benchmarked with Ultralytics 8.3.157</figcaption>
+</figure>
+
+#### NVIDIA Jetson Orin NX 16GB
+
+<figure style="text-align: center;">
+    <img src="https://github.com/ultralytics/assets/releases/download/v0.0.0/jetson-orin-nx-16-benchmarks-coco128.avif" alt="Jetson Orin NX 16GB Benchmarks">
+    <figcaption style="font-style: italic; color: gray;">Benchmarked with Ultralytics 8.3.157</figcaption>
+</figure>
+
+### Detailed Comparison Tables
+
+The below table represents the benchmark results for five different models (YOLO11n, YOLO11s, YOLO11m, YOLO11l, YOLO11x) across ten different formats (PyTorch, TorchScript, ONNX, OpenVINO, TensorRT, TF SavedModel, TF GraphDef, TF Lite, MNN, NCNN), giving us the status, size, mAP50-95(B) metric, and inference time for each combination.
+
+#### NVIDIA Jetson AGX Orin Developer Kit (64GB)
+
+!!! tip "Performance"
 
     === "YOLO11n"
 
         | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
         |-----------------|--------|-------------------|-------------|------------------------|
-        | PyTorch         | ✅      | 5.4               | 0.6176      | 19.80                  |
-        | TorchScript     | ✅      | 10.5              | 0.6100      | 13.30                  |
-        | ONNX            | ✅      | 10.2              | 0.6082      | 67.92                  |
-        | OpenVINO        | ✅      | 10.4              | 0.6082      | 118.21                 |
-        | TensorRT (FP32) | ✅      | 14.1              | 0.6100      | 7.94                   |
-        | TensorRT (FP16) | ✅      | 8.3               | 0.6082      | 4.80                   |
-        | TensorRT (INT8) | ✅      | 6.6               | 0.3256      | 4.17                   |
-        | TF SavedModel   | ✅      | 25.8              | 0.6082      | 185.88                 |
-        | TF GraphDef     | ✅      | 10.3              | 0.6082      | 256.66                 |
-        | TF Lite         | ✅      | 10.3              | 0.6082      | 284.64                 |
-        | PaddlePaddle    | ✅      | 20.4              | 0.6082      | 477.41                 |
-        | NCNN            | ✅      | 10.2              | 0.6106      | 32.18                  |
+        | PyTorch         | ✅      | 5.4               | 0.5101      | 9.40                   |
+        | TorchScript     | ✅      | 10.5              | 0.5083      | 11.00                  |
+        | ONNX            | ✅      | 10.2              | 0.5077      | 48.32                  |
+        | OpenVINO        | ✅      | 10.4              | 0.5058      | 27.24                  |
+        | TensorRT (FP32) | ✅      | 12.1              | 0.5085      | 3.93                   |
+        | TensorRT (FP16) | ✅      | 8.3               | 0.5063      | 2.55                   |
+        | TensorRT (INT8) | ✅      | 5.4               | 0.4719      | 2.18                   |
+        | TF SavedModel   | ✅      | 25.9              | 0.5077      | 66.87                  |
+        | TF GraphDef     | ✅      | 10.3              | 0.5077      | 65.68                  |
+        | TF Lite         | ✅      | 10.3              | 0.5077      | 272.92                 |
+        | MNN             | ✅      | 10.1              | 0.5059      | 36.33                  |
+        | NCNN            | ✅      | 10.2              | 0.5031      | 28.51                  |
 
     === "YOLO11s"
 
         | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
         |-----------------|--------|-------------------|-------------|------------------------|
-        | PyTorch         | ✅      | 18.4              | 0.7526      | 20.20                  |
-        | TorchScript     | ✅      | 36.5              | 0.7416      | 23.42                  |
-        | ONNX            | ✅      | 36.3              | 0.7416      | 162.01                 |
-        | OpenVINO        | ✅      | 36.4              | 0.7416      | 159.61                 |
-        | TensorRT (FP32) | ✅      | 40.3              | 0.7416      | 13.93                  |
-        | TensorRT (FP16) | ✅      | 21.7              | 0.7416      | 7.47                   |
-        | TensorRT (INT8) | ✅      | 13.6              | 0.3179      | 5.66                   |
-        | TF SavedModel   | ✅      | 91.1              | 0.7416      | 316.46                 |
-        | TF GraphDef     | ✅      | 36.4              | 0.7416      | 506.71                 |
-        | TF Lite         | ✅      | 36.4              | 0.7416      | 842.97                 |
-        | PaddlePaddle    | ✅      | 72.5              | 0.7416      | 1172.57                |
-        | NCNN            | ✅      | 36.2              | 0.7419      | 66.00                  |
+        | PyTorch         | ✅      | 18.4              | 0.5783      | 12.10                  |
+        | TorchScript     | ✅      | 36.5              | 0.5782      | 11.01                  |
+        | ONNX            | ✅      | 36.3              | 0.5782      | 107.54                 |
+        | OpenVINO        | ✅      | 36.4              | 0.5810      | 55.03                  |
+        | TensorRT (FP32) | ✅      | 38.1              | 0.5781      | 6.52                   |
+        | TensorRT (FP16) | ✅      | 21.4              | 0.5803      | 3.65                   |
+        | TensorRT (INT8) | ✅      | 12.1              | 0.5735      | 2.81                   |
+        | TF SavedModel   | ✅      | 91.0              | 0.5782      | 132.73                 |
+        | TF GraphDef     | ✅      | 36.4              | 0.5782      | 134.96                 |
+        | TF Lite         | ✅      | 36.3              | 0.5782      | 798.21                 |
+        | MNN             | ✅      | 36.2              | 0.5777      | 82.35                  |
+        | NCNN            | ✅      | 36.2              | 0.5784      | 56.07                  |
 
     === "YOLO11m"
 
         | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
         |-----------------|--------|-------------------|-------------|------------------------|
-        | PyTorch         | ✅      | 38.8              | 0.7595      | 36.70                  |
-        | TorchScript     | ✅      | 77.3              | 0.7643      | 50.95                  |
-        | ONNX            | ✅      | 76.9              | 0.7643      | 416.34                 |
-        | OpenVINO        | ✅      | 77.1              | 0.7643      | 370.99                 |
-        | TensorRT (FP32) | ✅      | 81.5              | 0.7640      | 30.49                  |
-        | TensorRT (FP16) | ✅      | 42.2              | 0.7658      | 14.93                  |
-        | TensorRT (INT8) | ✅      | 24.3              | 0.4118      | 10.32                  |
-        | TF SavedModel   | ✅      | 192.7             | 0.7643      | 597.08                 |
-        | TF GraphDef     | ✅      | 77.0              | 0.7643      | 1016.12                |
-        | TF Lite         | ✅      | 77.0              | 0.7643      | 2494.60                |
-        | PaddlePaddle    | ✅      | 153.8             | 0.7643      | 3218.99                |
-        | NCNN            | ✅      | 76.8              | 0.7691      | 192.77                 |
+        | PyTorch         | ✅      | 38.8              | 0.6265      | 22.20                  |
+        | TorchScript     | ✅      | 77.3              | 0.6307      | 21.47                  |
+        | ONNX            | ✅      | 76.9              | 0.6307      | 270.89                 |
+        | OpenVINO        | ✅      | 77.1              | 0.6284      | 129.10                 |
+        | TensorRT (FP32) | ✅      | 78.8              | 0.6306      | 12.53                  |
+        | TensorRT (FP16) | ✅      | 41.9              | 0.6305      | 6.25                   |
+        | TensorRT (INT8) | ✅      | 23.2              | 0.6291      | 4.69                   |
+        | TF SavedModel   | ✅      | 192.7             | 0.6307      | 299.95                 |
+        | TF GraphDef     | ✅      | 77.1              | 0.6307      | 310.58                 |
+        | TF Lite         | ✅      | 77.0              | 0.6307      | 2400.54                |
+        | MNN             | ✅      | 76.8              | 0.6308      | 213.56                 |
+        | NCNN            | ✅      | 76.8              | 0.6284      | 141.18                 |
 
     === "YOLO11l"
 
         | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
         |-----------------|--------|-------------------|-------------|------------------------|
-        | PyTorch         | ✅      | 49.0              | 0.7475      | 47.6                   |
-        | TorchScript     | ✅      | 97.6              | 0.7250      | 66.36                  |
-        | ONNX            | ✅      | 97.0              | 0.7250      | 532.58                 |
-        | OpenVINO        | ✅      | 97.3              | 0.7250      | 477.55                 |
-        | TensorRT (FP32) | ✅      | 101.6             | 0.7250      | 38.71                  |
-        | TensorRT (FP16) | ✅      | 52.6              | 0.7265      | 19.35                  |
-        | TensorRT (INT8) | ✅      | 31.6              | 0.3856      | 13.50                  |
-        | TF SavedModel   | ✅      | 243.3             | 0.7250      | 895.24                 |
-        | TF GraphDef     | ✅      | 97.2              | 0.7250      | 1301.19                |
-        | TF Lite         | ✅      | 97.2              | 0.7250      | 3202.93                |
-        | PaddlePaddle    | ✅      | 193.9             | 0.7250      | 4206.98                |
-        | NCNN            | ✅      | 96.9              | 0.7252      | 225.75                 |
+        | PyTorch         | ✅      | 49.0              | 0.6364      | 27.70                   |
+        | TorchScript     | ✅      | 97.6              | 0.6399      | 27.94                  |
+        | ONNX            | ✅      | 97.0              | 0.6409      | 345.47                 |
+        | OpenVINO        | ✅      | 97.3              | 0.6378      | 161.93                 |
+        | TensorRT (FP32) | ✅      | 99.1              | 0.6406      | 16.11                  |
+        | TensorRT (FP16) | ✅      | 52.6              | 0.6376      | 8.08                   |
+        | TensorRT (INT8) | ✅      | 30.8              | 0.6208      | 6.12                   |
+        | TF SavedModel   | ✅      | 243.1             | 0.6409      | 390.78                 |
+        | TF GraphDef     | ✅      | 97.2              | 0.6409      | 398.76                 |
+        | TF Lite         | ✅      | 97.1              | 0.6409      | 3037.05                |
+        | MNN             | ✅      | 96.9              | 0.6372      | 265.46                 |
+        | NCNN            | ✅      | 96.9              | 0.6364      | 179.68                 |
 
     === "YOLO11x"
 
         | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
         |-----------------|--------|-------------------|-------------|------------------------|
-        | PyTorch         | ✅      | 109.3             | 0.8288      | 85.60                  |
-        | TorchScript     | ✅      | 218.1             | 0.8308      | 121.67                 |
-        | ONNX            | ✅      | 217.5             | 0.8308      | 1073.14                |
-        | OpenVINO        | ✅      | 217.8             | 0.8308      | 955.60                 |
-        | TensorRT (FP32) | ✅      | 221.6             | 0.8307      | 75.84                  |
-        | TensorRT (FP16) | ✅      | 113.1             | 0.8295      | 35.75                  |
-        | TensorRT (INT8) | ✅      | 62.2              | 0.4783      | 22.23                  |
-        | TF SavedModel   | ✅      | 545.0             | 0.8308      | 1497.40                |
-        | TF GraphDef     | ✅      | 217.8             | 0.8308      | 2552.42                |
-        | TF Lite         | ✅      | 217.8             | 0.8308      | 7044.58                |
-        | PaddlePaddle    | ✅      | 434.9             | 0.8308      | 8386.73                |
-        | NCNN            | ✅      | 217.3             | 0.8304      | 486.36                 |
+        | PyTorch         | ✅      | 109.3             | 0.7005      | 44.40                  |
+        | TorchScript     | ✅      | 218.1             | 0.6898      | 47.49                  |
+        | ONNX            | ✅      | 217.5             | 0.6900      | 682.98                 |
+        | OpenVINO        | ✅      | 217.8             | 0.6876      | 298.15                 |
+        | TensorRT (FP32) | ✅      | 219.6             | 0.6904      | 28.50                  |
+        | TensorRT (FP16) | ✅      | 112.2             | 0.6887      | 13.55                  |
+        | TensorRT (INT8) | ✅      | 60.0              | 0.6574      | 9.40                   |
+        | TF SavedModel   | ✅      | 544.3             | 0.6900      | 749.85                 |
+        | TF GraphDef     | ✅      | 217.7             | 0.6900      | 753.86                 |
+        | TF Lite         | ✅      | 217.6             | 0.6900      | 6603.27                |
+        | MNN             | ✅      | 217.3             | 0.6868      | 519.77                 |
+        | NCNN            | ✅      | 217.3             | 0.6849      | 298.58                 |
 
-[Explore more benchmarking efforts by Seeed Studio](https://www.seeedstudio.com/blog/2023/03/30/yolov8-performance-benchmarks-on-nvidia-jetson-devices) running on different versions of NVIDIA Jetson hardware.
+    Benchmarked with Ultralytics 8.3.157
+
+    !!! note
+
+        Inference time does not include pre/ post-processing.
+
+#### NVIDIA Jetson Orin Nano Super Developer Kit
+
+!!! tip "Performance"
+
+    === "YOLO11n"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 5.4               | 0.5101      | 13.70                  |
+        | TorchScript     | ✅      | 10.5              | 0.5082      | 13.69                  |
+        | ONNX            | ✅      | 10.2              | 0.5081      | 14.47                  |
+        | OpenVINO        | ✅      | 10.4              | 0.5058      | 56.66                  |
+        | TensorRT (FP32) | ✅      | 12.0              | 0.5081      | 7.44                   |
+        | TensorRT (FP16) | ✅      | 8.2               | 0.5061      | 4.53                   |
+        | TensorRT (INT8) | ✅      | 5.4               | 0.4825      | 3.70                   |
+        | TF SavedModel   | ✅      | 25.9              | 0.5077      | 116.23                 |
+        | TF GraphDef     | ✅      | 10.3              | 0.5077      | 114.92                 |
+        | TF Lite         | ✅      | 10.3              | 0.5077      | 340.75                 |
+        | MNN             | ✅      | 10.1              | 0.5059      | 76.26                  |
+        | NCNN            | ✅      | 10.2              | 0.5031      | 45.03                  |
+
+    === "YOLO11s"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 18.4              | 0.5790      | 20.90                  |
+        | TorchScript     | ✅      | 36.5              | 0.5781      | 21.22                  |
+        | ONNX            | ✅      | 36.3              | 0.5781      | 25.07                  |
+        | OpenVINO        | ✅      | 36.4              | 0.5810      | 122.98                 |
+        | TensorRT (FP32) | ✅      | 37.9              | 0.5783      | 13.02                  |
+        | TensorRT (FP16) | ✅      | 21.8              | 0.5779      | 6.93                   |
+        | TensorRT (INT8) | ✅      | 12.2              | 0.5735      | 5.08                   |
+        | TF SavedModel   | ✅      | 91.0              | 0.5782      | 250.65                 |
+        | TF GraphDef     | ✅      | 36.4              | 0.5782      | 252.69                 |
+        | TF Lite         | ✅      | 36.3              | 0.5782      | 998.68                 |
+        | MNN             | ✅      | 36.2              | 0.5781      | 188.01                 |
+        | NCNN            | ✅      | 36.2              | 0.5784      | 101.37                 |
+
+    === "YOLO11m"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 38.8              | 0.6266      | 46.50                  |
+        | TorchScript     | ✅      | 77.3              | 0.6307      | 47.95                  |
+        | ONNX            | ✅      | 76.9              | 0.6307      | 53.06                  |
+        | OpenVINO        | ✅      | 77.1              | 0.6284      | 301.63                 |
+        | TensorRT (FP32) | ✅      | 78.8              | 0.6305      | 27.86                  |
+        | TensorRT (FP16) | ✅      | 41.7              | 0.6309      | 13.50                  |
+        | TensorRT (INT8) | ✅      | 23.2              | 0.6291      | 9.12                   |
+        | TF SavedModel   | ✅      | 192.7             | 0.6307      | 622.24                 |
+        | TF GraphDef     | ✅      | 77.1              | 0.6307      | 628.74                 |
+        | TF Lite         | ✅      | 77.0              | 0.6307      | 2997.93                |
+        | MNN             | ✅      | 76.8              | 0.6299      | 509.96                 |
+        | NCNN            | ✅      | 76.8              | 0.6284      | 292.99                 |
+
+    === "YOLO11l"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 49.0              | 0.6364      | 56.50                  |
+        | TorchScript     | ✅      | 97.6              | 0.6409      | 62.51                  |
+        | ONNX            | ✅      | 97.0              | 0.6399      | 68.35                  |
+        | OpenVINO        | ✅      | 97.3              | 0.6378      | 376.03                 |
+        | TensorRT (FP32) | ✅      | 99.2              | 0.6396      | 35.59                  |
+        | TensorRT (FP16) | ✅      | 52.1              | 0.6361      | 17.48                  |
+        | TensorRT (INT8) | ✅      | 30.9              | 0.6207      | 11.87                  |
+        | TF SavedModel   | ✅      | 243.1             | 0.6409      | 807.47                 |
+        | TF GraphDef     | ✅      | 97.2              | 0.6409      | 822.88                 |
+        | TF Lite         | ✅      | 97.1              | 0.6409      | 3792.23                |
+        | MNN             | ✅      | 96.9              | 0.6372      | 631.16                 |
+        | NCNN            | ✅      | 96.9              | 0.6364      | 350.46                 |
+
+    === "YOLO11x"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 109.3             | 0.7005      | 90.00                  |
+        | TorchScript     | ✅      | 218.1             | 0.6901      | 113.40                 |
+        | ONNX            | ✅      | 217.5             | 0.6901      | 122.94                 |
+        | OpenVINO        | ✅      | 217.8             | 0.6876      | 713.1                  |
+        | TensorRT (FP32) | ✅      | 219.5             | 0.6904      | 66.93                  |
+        | TensorRT (FP16) | ✅      | 112.2             | 0.6892      | 32.58                  |
+        | TensorRT (INT8) | ✅      | 61.5              | 0.6612      | 19.90                  |
+        | TF SavedModel   | ✅      | 544.3             | 0.6900      | 1605.4                 |
+        | TF GraphDef     | ✅      | 217.8             | 0.6900      | 2961.8                 |
+        | TF Lite         | ✅      | 217.6             | 0.6900      | 8234.86                |
+        | MNN             | ✅      | 217.3             | 0.6893      | 1254.18                |
+        | NCNN            | ✅      | 217.3             | 0.6849      | 725.50                 |
+
+    Benchmarked with Ultralytics 8.3.157
+
+    !!! note
+
+        Inference time does not include pre/ post-processing.
+
+#### NVIDIA Jetson Orin NX 16GB
+
+!!! tip "Performance"
+
+    === "YOLO11n"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 5.4               | 0.5101      | 12.90                  |
+        | TorchScript     | ✅      | 10.5              | 0.5082      | 13.17                  |
+        | ONNX            | ✅      | 10.2              | 0.5081      | 15.43                  |
+        | OpenVINO        | ✅      | 10.4              | 0.5058      | 39.80                  |
+        | TensorRT (FP32) | ✅      | 11.8              | 0.5081      | 7.94                   |
+        | TensorRT (FP16) | ✅      | 8.1               | 0.5085      | 4.73                   |
+        | TensorRT (INT8) | ✅      | 5.4               | 0.4786      | 3.90                   |
+        | TF SavedModel   | ✅      | 25.9              | 0.5077      | 88.48                  |
+        | TF GraphDef     | ✅      | 10.3              | 0.5077      | 86.67                  |
+        | TF Lite         | ✅      | 10.3              | 0.5077      | 302.55                 |
+        | MNN             | ✅      | 10.1              | 0.5059      | 52.73                  |
+        | NCNN            | ✅      | 10.2              | 0.5031      | 32.04                  |
+
+    === "YOLO11s"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 18.4              | 0.5790      | 21.70                  |
+        | TorchScript     | ✅      | 36.5              | 0.5781      | 22.71                  |
+        | ONNX            | ✅      | 36.3              | 0.5781      | 26.49                  |
+        | OpenVINO        | ✅      | 36.4              | 0.5810      | 84.73                  |
+        | TensorRT (FP32) | ✅      | 37.8              | 0.5783      | 13.77                  |
+        | TensorRT (FP16) | ✅      | 21.2              | 0.5796      | 7.31                   |
+        | TensorRT (INT8) | ✅      | 12.0              | 0.5735      | 5.33                   |
+        | TF SavedModel   | ✅      | 91.0              | 0.5782      | 185.06                 |
+        | TF GraphDef     | ✅      | 36.4              | 0.5782      | 186.45                 |
+        | TF Lite         | ✅      | 36.3              | 0.5782      | 882.58                 |
+        | MNN             | ✅      | 36.2              | 0.5775      | 126.36                 |
+        | NCNN            | ✅      | 36.2              | 0.5784      | 66.73                  |
+
+    === "YOLO11m"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 38.8              | 0.6266      | 45.00                  |
+        | TorchScript     | ✅      | 77.3              | 0.6307      | 51.87                  |
+        | ONNX            | ✅      | 76.9              | 0.6307      | 56.00                  |
+        | OpenVINO        | ✅      | 77.1              | 0.6284      | 202.69                 |
+        | TensorRT (FP32) | ✅      | 78.7              | 0.6305      | 30.38                  |
+        | TensorRT (FP16) | ✅      | 41.8              | 0.6302      | 14.48                  |
+        | TensorRT (INT8) | ✅      | 23.2              | 0.6291      | 9.74                   |
+        | TF SavedModel   | ✅      | 192.7             | 0.6307      | 445.58                 |
+        | TF GraphDef     | ✅      | 77.1              | 0.6307      | 460.94                 |
+        | TF Lite         | ✅      | 77.0              | 0.6307      | 2653.65                |
+        | MNN             | ✅      | 76.8              | 0.6308      | 339.38                 |
+        | NCNN            | ✅      | 76.8              | 0.6284      | 187.64                 |
+
+    === "YOLO11l"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 49.0              | 0.6364      | 56.60                  |
+        | TorchScript     | ✅      | 97.6              | 0.6409      | 66.72                  |
+        | ONNX            | ✅      | 97.0              | 0.6399      | 71.92                  |
+        | OpenVINO        | ✅      | 97.3              | 0.6378      | 254.17                 |
+        | TensorRT (FP32) | ✅      | 99.2              | 0.6406      | 38.89                  |
+        | TensorRT (FP16) | ✅      | 51.9              | 0.6363      | 18.59                  |
+        | TensorRT (INT8) | ✅      | 30.9              | 0.6207      | 12.60                  |
+        | TF SavedModel   | ✅      | 243.1             | 0.6409      | 575.98                 |
+        | TF GraphDef     | ✅      | 97.2              | 0.6409      | 583.79                 |
+        | TF Lite         | ✅      | 97.1              | 0.6409      | 3353.41                |
+        | MNN             | ✅      | 96.9              | 0.6367      | 421.33                 |
+        | NCNN            | ✅      | 96.9              | 0.6364      | 228.26                 |
+
+    === "YOLO11x"
+
+        | Format          | Status | Size on disk (MB) | mAP50-95(B) | Inference time (ms/im) |
+        |-----------------|--------|-------------------|-------------|------------------------|
+        | PyTorch         | ✅      | 109.3             | 0.7005      | 98.50                  |
+        | TorchScript     | ✅      | 218.1             | 0.6901      | 123.03                 |
+        | ONNX            | ✅      | 217.5             | 0.6901      | 129.55                 |
+        | OpenVINO        | ✅      | 217.8             | 0.6876      | 483.44                 |
+        | TensorRT (FP32) | ✅      | 219.6             | 0.6904      | 75.92                  |
+        | TensorRT (FP16) | ✅      | 112.1             | 0.6885      | 35.78                  |
+        | TensorRT (INT8) | ✅      | 61.6              | 0.6592      | 21.60                  |
+        | TF SavedModel   | ✅      | 544.3             | 0.6900      | 1120.43                |
+        | TF GraphDef     | ✅      | 217.7             | 0.6900      | 1172.35                |
+        | TF Lite         | ✅      | 217.6             | 0.6900      | 7283.63                |
+        | MNN             | ✅      | 217.3             | 0.6877      | 840.16                 |
+        | NCNN            | ✅      | 217.3             | 0.6849      | 474.41                 |
+
+    Benchmarked with Ultralytics 8.3.157
+
+    !!! note
+
+        Inference time does not include pre/ post-processing.
+
+[Explore more benchmarking efforts by Seeed Studio](https://www.seeedstudio.com/blog/2023/03/30/yolov8-performance-benchmarks-on-nvidia-jetson-devices/) running on different versions of NVIDIA Jetson hardware.
 
 ## Reproduce Our Results
 
@@ -438,18 +665,18 @@ To reproduce the above Ultralytics benchmarks on all export [formats](../modes/e
         # Load a YOLO11n PyTorch model
         model = YOLO("yolo11n.pt")
 
-        # Benchmark YOLO11n speed and accuracy on the COCO8 dataset for all all export formats
-        results = model.benchmarks(data="coco8.yaml", imgsz=640)
+        # Benchmark YOLO11n speed and accuracy on the COCO128 dataset for all all export formats
+        results = model.benchmark(data="coco128.yaml", imgsz=640)
         ```
 
     === "CLI"
 
         ```bash
-        # Benchmark YOLO11n speed and accuracy on the COCO8 dataset for all all export formats
-        yolo benchmark model=yolo11n.pt data=coco8.yaml imgsz=640
+        # Benchmark YOLO11n speed and accuracy on the COCO128 dataset for all all export formats
+        yolo benchmark model=yolo11n.pt data=coco128.yaml imgsz=640
         ```
 
-    Note that benchmarking results might vary based on the exact hardware and software configuration of a system, as well as the current workload of the system at the time the benchmarks are run. For the most reliable results use a dataset with a large number of images, i.e. `data='coco8.yaml' (4 val images), or `data='coco.yaml'` (5000 val images).
+    Note that benchmarking results might vary based on the exact hardware and software configuration of a system, as well as the current workload of the system at the time the benchmarks are run. For the most reliable results use a dataset with a large number of images, i.e. `data='coco.yaml'` (5000 val images).
 
 ## Best Practices when using NVIDIA Jetson
 
@@ -496,7 +723,7 @@ Deploying Ultralytics YOLO11 on NVIDIA Jetson devices is a straightforward proce
 
 ### What performance benchmarks can I expect from YOLO11 models on NVIDIA Jetson devices?
 
-YOLO11 models have been benchmarked on various NVIDIA Jetson devices showing significant performance improvements. For example, the TensorRT format delivers the best inference performance. The table in the [Detailed Comparison Table](#detailed-comparison-table) section provides a comprehensive view of performance metrics like mAP50-95 and inference time across different model formats.
+YOLO11 models have been benchmarked on various NVIDIA Jetson devices showing significant performance improvements. For example, the TensorRT format delivers the best inference performance. The table in the [Detailed Comparison Tables](#detailed-comparison-tables) section provides a comprehensive view of performance metrics like mAP50-95 and inference time across different model formats.
 
 ### Why should I use TensorRT for deploying YOLO11 on NVIDIA Jetson?
 
